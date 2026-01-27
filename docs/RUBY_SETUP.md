@@ -23,35 +23,28 @@ cargo install rv
 ### Install a Ruby version
 
 ```bash
-rv install 3.3.6
+rv ruby install 3.3.6
 ```
 
-### Set global Ruby version
+### Set project Ruby version
 
 ```bash
-rv global 3.3.6
+cd your-project
+rv ruby pin 3.3.6
 ```
 
-### Project-specific Ruby version
-
-Create a `.ruby-version` file in your project:
-
-```bash
-echo "3.3.6" > .ruby-version
-```
-
-rv automatically switches when you `cd` into the directory (configured in `oh-my-zsh-custom/ruby.zsh`).
+This creates a `.ruby-version` file in your project. rv automatically switches when you `cd` into the directory (configured in `oh-my-zsh-custom/ruby.zsh`).
 
 ### List installed versions
 
 ```bash
-rv list
+rv ruby list
 ```
 
-### List available versions
+### Find available versions
 
 ```bash
-rv install --list
+rv ruby find 3.3
 ```
 
 ## Older Ruby Versions
@@ -80,14 +73,15 @@ FROM ruby:2.5
 
 2. **Install them with rv:**
    ```bash
-   rv install 3.3.6
-   rv install 3.2.5
+   rv ruby install 3.3.6
+   rv ruby install 3.2.5
    # etc.
    ```
 
-3. **Set global version:**
+3. **Set project version:**
    ```bash
-   rv global 3.3.6
+   cd your-project
+   rv ruby pin 3.3.6
    ```
 
 4. **Test:**
