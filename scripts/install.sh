@@ -9,11 +9,15 @@ set -e
 
 DOTFILES_DIR="$HOME/Developer/dotfiles"
 BACKUP_DIR="$HOME/.dotfiles-backup-$(date +%Y%m%d-%H%M%S)"
+PLAYWRIGHT_CACHE_DIR="$HOME/.cache/ms-playwright"
 
 echo "🎯 Installing dotfiles from $DOTFILES_DIR"
 
 # Create backup directory for existing files
 mkdir -p "$BACKUP_DIR"
+
+# Create Playwright cache folder
+mkdir -p "$PLAYWRIGHT_CACHE_DIR"
 
 # Function to safely backup and symlink
 safe_link() {
