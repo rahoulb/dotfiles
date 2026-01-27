@@ -59,6 +59,9 @@ safe_backup "$HOME/Documents/NextCloud" "$RSYNC_BASE/nextcloud" "NextCloud"
 # Dotfiles repo
 safe_backup "$HOME/Developer/dotfiles" "$RSYNC_BASE/dotfiles" "Dotfiles"
 
+# SSH keys and config
+safe_backup "$HOME/.ssh" "$RSYNC_BASE/ssh" "SSH Keys"
+
 # ============================================================================
 # Done
 # ============================================================================
