@@ -48,14 +48,20 @@ dotfiles/
    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
    ```
 
-3. **Run the installation script:**
+3. **Install modern dev tools:**
+   ```bash
+   # rv - Fast Ruby version manager (replaces rbenv)
+   cargo install rv
+   ```
+
+4. **Run the installation script:**
    ```bash
    ./scripts/install.sh
    ```
 
-4. **Set up private configuration** (see below)
+5. **Set up private configuration** (see below)
 
-5. **Restart your terminal** or:
+6. **Restart your terminal** or:
    ```bash
    source ~/.zshrc
    ```
@@ -151,10 +157,12 @@ The config automatically detects Linux vs macOS and loads the appropriate settin
 - **Git** (aliases and settings)
 - **DevPod** (dev container management)
 - **Node** (nvm, npm, bun, yarn)
-- **Ruby** (rbenv)
+- **Ruby** ([rv](https://github.com/spinel-coop/rv) - modern replacement for rbenv)
 - **Python**
 - **Docker**
 - **Cargo** (Rust)
+
+> **Note on Ruby:** We use `rv` instead of rbenv - it's faster and modern (Rust-based). For older Ruby versions that rv doesn't support, use devcontainers.
 
 ## 📝 License
 
