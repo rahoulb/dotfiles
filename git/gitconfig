@@ -1,0 +1,6 @@
+[user]
+	email = rahoulb@echodek.co
+	name = Rahoul Baruah
+	signingkey = /home/rahoulb/.ssh/rahoulb.pub
+[gpg]
+	format = ssh

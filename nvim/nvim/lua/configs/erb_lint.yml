@@ -1,0 +1,42 @@
+---
+EnableDefaultLinters: true
+linters:
+  AllowedScriptType:
+    enabled: true
+    allowed_types:
+      - 'module'
+      - 'text/javascript'
+    allow_blank: false
+    disallow_inline_scripts: false
+  Rubocop:
+    enabled: true
+    exclude:
+      - "**/vendor/**/*"
+      - "**/vendor/**/.*"
+      - "bin/**"
+      - "db/**/*"
+      - "spec/**/*"
+      - "config/**/*"
+      - "node_modules/**/*"
+    rubocop_config:
+      require: standard
+      inherit_gem:
+        standard: config/base.yml
+      AllCops:
+        DisabledByDefault: true      
+      Layout/InitialIndentation:
+        Enabled: false
+      Layout/TrailingEmptyLines:
+        Enabled: false
+      Layout/TrailingWhitespace:
+        Enabled: false
+      Naming/FileName:
+        Enabled: false
+      Style/FrozenStringLiteralComment:
+        Enabled: false
+      Layout/LineLength:
+        Enabled: false
+      Lint/UselessAssignment:
+        Enabled: false
+      Layout/FirstHashElementIndentation:
+        Enabled: false

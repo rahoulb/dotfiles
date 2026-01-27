@@ -1,0 +1,32 @@
+# Secrets and private data (should be in ~/Developer/private/)
+*secret*
+*token*
+*key*
+*.pem
+*.ppk
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# IDE
+.vscode/
+.idea/
+
+# Neovim runtime files that shouldn't be committed
+nvim/lazy-lock.json
+nvim/.luarc.json
+nvim/.nvim.log
