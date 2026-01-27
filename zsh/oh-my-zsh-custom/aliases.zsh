@@ -13,7 +13,8 @@ if [[ $(uname) == "Darwin" ]]; then
   }
 else
   alias tmx="tmux new -A -s rahoulb"
-  alias nvim="flatpak run io.neovim.nvim"
+  # Use native nvim instead of flatpak (flatpak breaks terminal state)
+  alias nvim="/opt/nvim-linux-x86_64/bin/nvim"
 
   function devconnect () {
     ssh -i $HOME/.ssh/rahoulb rahoulb@xbeast -t -- ssh $1.devpod
