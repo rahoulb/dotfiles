@@ -105,8 +105,16 @@ alias nvim="/opt/nvim-linux64/bin/nvim"
 ## Status
 
 - ✅ **Fixed:** Using native nvim on xstation
+- ✅ **Flatpak removed:** Uninstalled to avoid confusion
 - ✅ **Mac:** Uses homebrew nvim (no issue)
 - ✅ **Pushed to git:** Change synced to dotfiles repo
+
+## Cleanup (Done)
+
+```bash
+# Remove flatpak neovim
+flatpak uninstall io.neovim.nvim -y
+```
 
 ---
 
