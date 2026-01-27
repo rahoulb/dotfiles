@@ -26,7 +26,7 @@ if command -v rv &> /dev/null; then
   else
     # Linux - rv installed via cargo
     _rv_autoload_hook() {
-      eval "$HOME/.cargo/bin/rv shell env zsh)"
+      eval "$($HOME/.cargo/bin/rv shell env zsh)"
     }
   fi
   
