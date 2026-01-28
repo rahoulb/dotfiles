@@ -2,7 +2,7 @@
 alias dcc='docker compose'
 alias control='printf "\e]1;%s\a" "Control" && ssh -i $HOME/.ssh/rahoulb control@control.echodek.co'
 alias python=python3
-alias cher='clawdbot'
+alias cher='moltbot'
 
 if [[ $(uname) == "Darwin" ]]; then
   alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
