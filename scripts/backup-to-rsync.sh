@@ -7,8 +7,8 @@
 
 set -e
 
-RSYNC_HOST="rsync.net"
-RSYNC_BASE="backups"
+RSYNC_HOST="zh1299@zh1299.rsync.net"
+RSYNC_BASE="backup"
 LOG_FILE="$HOME/.backup-to-rsync.log"
 DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
@@ -28,7 +28,11 @@ safe_backup() {
   echo "  📦 Backing up $name..." | tee -a "$LOG_FILE"
   
   if rsync -avz --delete \
+    --rsh='ssh -o StrictHostKeyChecking=no -i /home/rahoulb/.ssh/zh1299' \
     --exclude='.cache' \
+    --exclude='.stfolder' \
+    --exclude='.stversions' \
+    --exclude='ssh_auth_sock' \
     --exclude='node_modules' \
     --exclude='.git/objects' \
     --exclude='*.log' \
@@ -54,13 +58,16 @@ safe_backup "$HOME/Developer/private" "$RSYNC_BASE/private" "Private"
 safe_backup "$HOME/Documents/NextCloud" "$RSYNC_BASE/nextcloud" "NextCloud"
 
 # Obsidian Work Notes (optional - already synced via Obsidian Sync)
-# safe_backup "$HOME/Documents/Work Notes" "$RSYNC_BASE/obsidian" "Obsidian"
+safe_backup "$HOME/Documents/Work Notes" "$RSYNC_BASE/obsidian" "Obsidian"
 
 # Dotfiles repo
 safe_backup "$HOME/Developer/dotfiles" "$RSYNC_BASE/dotfiles" "Dotfiles"
 
 # SSH keys and config
 safe_backup "$HOME/.ssh" "$RSYNC_BASE/ssh" "SSH Keys"
+
+# Cher's documents (specs, notes, work product)
+safe_backup "$HOME/Sync/Cher" "$RSYNC_BASE/cher" "Cher Documents"
 
 # ============================================================================
 # Done
