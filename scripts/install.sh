@@ -128,6 +128,41 @@ if [ -n "$SKILLS_SOURCE" ]; then
   fi
 fi
 
+# ==========================================================================
+# Cron: sync Nextcloud skills -> ~/.claude/skills (every 15 minutes)
+# ==========================================================================
+
+echo ""
+echo "🕒 Installing cron job for syncing Claude skills..."
+
+ensure_cron_job() {
+  local marker="$1"
+  local line="$2"
+
+  # Read existing crontab (if any)
+  local current
+  current="$(crontab -l 2>/dev/null || true)"
+
+  if echo "$current" | grep -Fq "$marker"; then
+    echo "  ✅ Cron job already present ($marker)"
+    return 0
+  fi
+
+  echo "  ✨ Adding cron job ($marker)"
+  {
+    echo "$current"
+    echo "$marker"
+    echo "$line"
+  } | crontab -
+}
+
+# Ensure the sync script is executable (it lives in the repo)
+chmod +x "$DOTFILES_DIR/scripts/sync-claude-skills.sh" 2>/dev/null || true
+
+ensure_cron_job \
+  "# dotfiles: sync Nextcloud skills to ~/.claude/skills" \
+  "*/15 * * * * $DOTFILES_DIR/scripts/sync-claude-skills.sh >/dev/null 2>&1"
+
 # ============================================================================
 # Done!
 # ============================================================================
