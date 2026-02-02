@@ -98,6 +98,37 @@ if [ -d "$DOTFILES_DIR/ghostty" ] && [ -f "$DOTFILES_DIR/ghostty/config" ]; then
 fi
 
 # ============================================================================
+# Moltbot/OpenClaw skills (shared via Nextcloud)
+# ============================================================================
+echo ""
+echo "📝 Installing Moltbot/OpenClaw skills symlink..."
+
+OS_NAME="$(uname -s)"
+SKILLS_SOURCE=""
+
+case "$OS_NAME" in
+  Darwin)
+    SKILLS_SOURCE="$HOME/NextCloud/Cher/skills"
+    ;;
+  Linux)
+    SKILLS_SOURCE="$HOME/Documents/NextCloud/Cher/skills"
+    ;;
+  *)
+    echo "  ⚠️  Unknown OS ($OS_NAME). Skipping ~/.clawdbot/skills symlink."
+    SKILLS_SOURCE=""
+    ;;
+esac
+
+if [ -n "$SKILLS_SOURCE" ]; then
+  if [ -d "$SKILLS_SOURCE" ]; then
+    safe_link "$SKILLS_SOURCE" "$HOME/.clawdbot/skills"
+  else
+    echo "  ⚠️  Skills source not found: $SKILLS_SOURCE"
+    echo "     Skipping ~/.clawdbot/skills symlink (create the folder or mount Nextcloud first)."
+  fi
+fi
+
+# ============================================================================
 # Done!
 # ============================================================================
 echo ""
