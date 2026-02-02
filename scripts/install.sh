@@ -27,6 +27,12 @@ safe_link() {
   # Create parent directory if needed
   mkdir -p "$(dirname "$target")"
   
+  # If target already links to the right place, do nothing
+  if [ -L "$target" ] && [ "$(readlink "$target")" = "$source" ]; then
+    echo "  ✅ Already linked $target -> $source"
+    return 0
+  fi
+
   # Backup existing file/directory if it exists and isn't already a symlink
   if [ -e "$target" ] && [ ! -L "$target" ]; then
     echo "  📦 Backing up existing $target"
