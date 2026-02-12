@@ -8,10 +8,10 @@ OS_NAME="$(uname -s)"
 
 case "$OS_NAME" in
   Darwin)
-    SOURCE_DIR="$HOME/NextCloud/Cher/skills"
+    SOURCE_DIR="$HOME/NextCloud/Agents/Shared/skills"
     ;;
   Linux)
-    SOURCE_DIR="$HOME/Documents/NextCloud/Cher/skills"
+    SOURCE_DIR="$HOME/Documents/NextCloud/Agents/Shared/skills"
     ;;
   *)
     echo "Unknown OS ($OS_NAME); refusing to sync skills." >&2
