@@ -98,5 +98,8 @@ if [ $IS_MACOS -eq 1 ] && [ -f "$ZSH_CUSTOM/macos.zsh" ]; then
 fi
 
 if [ $IS_LINUX -eq 1 ] && [ -f "$ZSH_CUSTOM/linux.zsh" ]; then
+  # OpenClaw Completion
+  source "/home/rahoulb/.openclaw/completions/openclaw.zsh"
   source "$ZSH_CUSTOM/linux.zsh"
 fi
+
