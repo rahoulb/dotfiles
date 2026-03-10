@@ -1,6 +1,6 @@
 # Aliases
-alias dccup='docker compose -f .devcontainer/compose.yaml up -d'
-alias dccsh='docker compose -f .devcontainer/compose.yaml exec rails-app bash -l'
+alias dccup='devcontainer up --workspace-folder .'
+alias dccsh='devcontainer exec --workspace-folder . bash -l'
 alias dccdown='docker compose -f .devcontainer/compose.yaml down'
 alias dcc='docker compose'
 alias control='printf "\e]1;%s\a" "Control" && ssh -i $HOME/.ssh/rahoulb control@control.echodek.co'
