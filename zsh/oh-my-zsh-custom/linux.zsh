@@ -10,7 +10,9 @@ if [ -d "$HOME/.local/share/flatpak/exports/share" ]; then
 fi
 
 # OpenClaw Completion
-source "/home/rahoulb/.openclaw/completions/openclaw.zsh"
+if [ -d "$HOME/.openclaw/completions/openclaw.zsh" ]; then
+  source "$HOME/.openclaw/completions/openclaw.zsh"
+fi
 
 # Linux-specific paths (if not already in paths.zsh)
 export PATH="$PATH:$HOME/.local/bin"
