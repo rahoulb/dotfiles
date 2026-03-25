@@ -4,3 +4,5 @@
 	signingkey = /home/rahoulb/.ssh/rahoulb.pub
 [gpg]
 	format = ssh
+[init]
+	defaultBranch = main

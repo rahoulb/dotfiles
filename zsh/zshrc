@@ -103,3 +103,4 @@ if [ $IS_LINUX -eq 1 ] && [ -f "$ZSH_CUSTOM/linux.zsh" ]; then
   source "$ZSH_CUSTOM/linux.zsh"
 fi
 
+eval "$(/home/rahoulb/.local/bin/mise activate zsh)"
