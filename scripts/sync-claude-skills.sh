@@ -1,27 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Sync Nextcloud-managed Moltbot/OpenClaw skills into ~/.claude/skills
+# Sync OpenClaw-managed skills into ~/.openclaw/skills
+# Source: ~/OpenClaw/skills (git repo)
 # Used by cron (every 15 minutes) and can be run manually.
 
-OS_NAME="$(uname -s)"
+SOURCE_DIR="$HOME/OpenClaw/skills"
+TARGET_DIR="$HOME/.openclaw/skills"
 
-case "$OS_NAME" in
-  Darwin)
-    SOURCE_DIR="$HOME/NextCloud/Agents/Shared/skills"
-    ;;
-  Linux)
-    SOURCE_DIR="$HOME/Documents/NextCloud/Agents/Shared/skills"
-    ;;
-  *)
-    echo "Unknown OS ($OS_NAME); refusing to sync skills." >&2
-    exit 0
-    ;;
-esac
-
-TARGET_DIR="$HOME/.claude/skills"
-
-# Skip if Nextcloud folder not present (don’t create broken sync noise)
+# Skip if source folder not present
 if [ ! -d "$SOURCE_DIR" ]; then
   echo "Skills source not found: $SOURCE_DIR (skipping)" >&2
   exit 0
@@ -33,4 +20,6 @@ mkdir -p "$TARGET_DIR"
 rsync -a --delete \
   --exclude '.DS_Store' \
   --exclude '.git/' \
+  --exclude 'node_modules/' \
   "$SOURCE_DIR/" "$TARGET_DIR/"
+

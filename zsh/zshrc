@@ -104,3 +104,6 @@ if [ $IS_LINUX -eq 1 ] && [ -f "$ZSH_CUSTOM/linux.zsh" ]; then
 fi
 
 eval "$(/home/rahoulb/.local/bin/mise activate zsh)"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
