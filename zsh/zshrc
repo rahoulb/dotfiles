@@ -16,7 +16,6 @@ zstyle ':omz:update' mode auto
 # Plugins
 plugins=(
   aws
-  bbedit
   docker
   git
   git-prompt
