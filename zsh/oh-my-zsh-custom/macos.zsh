@@ -8,3 +8,4 @@ fi
 
 # macOS-specific utilities
 export PATH="$PATH:$HOME/.local/bin"
+export OPENCLAW_GATEWAY_TOKEN="f9ef407ff67ad8729abe321b93874683f38023965a824256"

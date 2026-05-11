@@ -1,5 +1,12 @@
 if [[ $(uname) == "Darwin" ]]; then
-  ssh-add --apple-use-keychain --apple-load-keychain ~/.ssh/rahoulb
+  # only attempt agent operations if an agent is reachable
+  if [[ -n "$SSH_AUTH_SOCK" ]] && ssh-add -l &>/dev/null; then
+    ssh-add --apple-use-keychain --apple-load-keychain ~/.ssh/rahoulb 2>/dev/null
+  elif [[ -z "$SSH_AUTH_SOCK" ]]; then
+    # spin one up if there's truly nothing
+    eval "$(ssh-agent -s)" >/dev/null
+    ssh-add --apple-use-keychain --apple-load-keychain ~/.ssh/rahoulb 2>/dev/null
+  fi
 else
   SSH_ENV="$HOME/.ssh/environment"
 
