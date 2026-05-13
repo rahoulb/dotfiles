@@ -13,11 +13,13 @@
 HOST="pismo-beach"
 
 open_session() {
-  session="$1"
+  name="$1"
   /usr/bin/osascript <<EOF
 tell application "iTerm"
   activate
-  create window with default profile command "ssh -t ${HOST} 'tmux -CC attach -t ${session}'"
+  tell current window 
+    create tab with profile "${name}" command "ssh -t ${HOST} 'tmux -CC -u attach -t ${name}'"
+  end tell
 end tell
 EOF
 }
