@@ -104,10 +104,5 @@ test -e "${HOME}/.local/bin/mise activate zsh" && eval "$(${HOME}/.local/bin/mis
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-# Launch Claude Code agents
-alias cher="$HOME/Obsidian/Agents/Cher/scripts/launch-cher.sh"
-alias dionne="$HOME/Obsidian/Agents/Dionne/scripts/launch-dionne.sh"
-alias tai="$HOME/Obsidian/Agents/Tai/scripts/launch-tai.sh"
-
 # Attach to pismo-beach over SSH, opening Cher + Dionne tmux sessions in iTerm
 alias pismo="$HOME/Developer/dotfiles/scripts/attach-pismo.sh"

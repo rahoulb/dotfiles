@@ -9,11 +9,6 @@ if [ -d "$HOME/.local/share/flatpak/exports/share" ]; then
   export XDG_DATA_DIRS="$HOME/.local/share/flatpak/exports/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
 fi
 
-# OpenClaw Completion
-if [ -d "$HOME/.openclaw/completions/openclaw.zsh" ]; then
-  source "$HOME/.openclaw/completions/openclaw.zsh"
-fi
-
 # Linux-specific paths (if not already in paths.zsh)
 export PATH="$PATH:$HOME/.local/bin"
 
