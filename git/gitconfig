@@ -1,8 +1,14 @@
 [user]
 	email = rahoulb@echodek.co
 	name = Rahoul Baruah
-	signingkey = /home/rahoulb/.ssh/rahoulb.pub
+	signingkey = ~/.ssh/rahoulb.pub
 [gpg]
 	format = ssh
 [init]
 	defaultBranch = main
+[credential "https://github.com"]
+	helper = 
+	helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !gh auth git-credential
