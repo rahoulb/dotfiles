@@ -1,1 +1,11 @@
+# Keep PATH free of duplicates — first occurrence wins. Set before any PATH
+# assignment so every later append (oh-my-zsh custom/*.zsh, nested shells) is
+# deduped automatically.
+typeset -U path PATH
+
 export PATH=/usr/local/bin:/opt/homebrew/bin:$PATH
+
+# Hermes Agent — state home on the HD volume (added 2026-07-22)
+export HERMES_HOME="/Volumes/HD/Agents/hermes"
+# Hermes launcher lives here
+export PATH="$HOME/.local/bin:$PATH"
