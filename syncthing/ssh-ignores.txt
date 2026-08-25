@@ -1,0 +1,35 @@
+// Syncthing ignore list for the ~/.ssh folder.
+//
+// ~/.ssh syncs device-to-device (no intermediate server) so that keys and
+// config follow every machine. These entries are the things that must NOT
+// follow, because they describe the state of one machine at one moment.
+//
+// .stignore itself is never synced by Syncthing, so each device holds a
+// local .stignore containing only `#include ssh-ignores.txt`. This file
+// lives inside the folder, so it does sync — which is what keeps every
+// device's ignore list identical. Edit it here in dotfiles, not in ~/.ssh.
+//
+// The sockets are the important ones. agent.sock and ssh_auth_sock are
+// symlinks to paths that are unique per machine AND per login session
+// (/tmp/ssh-*/agent.*, /private/tmp/com.apple.launchd.*/Listeners). Sync
+// one and the receiving device gets a link to nothing; its next login
+// shell repoints it and sends it back, and the two machines ping-pong,
+// intermittently dragging each other's panes onto a dead agent. That is
+// the exact failure ssh.zsh's stable-socket mechanism exists to prevent.
+
+.DS_Store
+
+// Agent sockets — per-machine, per-session. See above.
+agent.sock
+ssh_auth_sock
+
+// Agent environment dumps written by the Linux branch of ssh.zsh; they
+// carry a PID and socket path that mean nothing on another host.
+environment
+agent-environment
+
+// Host keys accumulate per-machine and merge badly; let each device keep
+// its own rather than generating conflicts on every new host you touch.
+known_hosts
+known_hosts.old
+known_hosts.backup.*

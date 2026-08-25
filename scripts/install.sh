@@ -89,6 +89,57 @@ echo "📝 Installing Git configuration..."
 safe_link "$DOTFILES_DIR/git/gitconfig" "$HOME/.gitconfig"
 
 # ============================================================================
+# Syncthing ignore list for ~/.ssh
+# ============================================================================
+# ~/.ssh is a Syncthing folder. Syncthing never syncs .stignore itself, so
+# the ignore list cannot simply be shared — each device needs its own
+# .stignore, which is why this runs here rather than being a symlink.
+#
+# The pattern: .stignore holds only an `#include`, and the payload it points
+# at lives inside ~/.ssh so Syncthing distributes it. Copy it rather than
+# symlinking — a symlink pointing out of the folder root is precisely the
+# thing these ignores exist to keep out of the index.
+#
+# A missing #include target is an error to Syncthing, so on a new machine
+# run this BEFORE adding the device to the SSH folder.
+echo ""
+echo "🔒 Installing Syncthing ignore list for ~/.ssh..."
+if [ ! -d "$HOME/.ssh" ]; then
+  echo "  ⏭️  No ~/.ssh yet — skipping"
+else
+  ssh_ignores_src="$DOTFILES_DIR/syncthing/ssh-ignores.txt"
+  ssh_ignores_dst="$HOME/.ssh/ssh-ignores.txt"
+
+  # Copy only when it differs: rewriting an identical file bumps its mtime,
+  # which Syncthing sees as a change and re-propagates. Two machines doing
+  # that at once is how you manufacture a sync-conflict out of nothing.
+  if cmp -s "$ssh_ignores_src" "$ssh_ignores_dst"; then
+    echo "  ✅ ssh-ignores.txt already current"
+  else
+    if [ -e "$ssh_ignores_dst" ]; then
+      echo "  📦 Backing up existing ssh-ignores.txt"
+      cp "$ssh_ignores_dst" "$BACKUP_DIR/"
+    fi
+    echo "  ✨ Copying ssh-ignores.txt"
+    cp "$ssh_ignores_src" "$ssh_ignores_dst"
+  fi
+
+  # Back up any existing .stignore before replacing it. It is the only record
+  # of what this device had been ignoring, and it exists nowhere else — not in
+  # git, and not on the other devices, since Syncthing never carries it.
+  if grep -qs '^#include ssh-ignores.txt' "$HOME/.ssh/.stignore"; then
+    echo "  ✅ .stignore already includes it"
+  else
+    if [ -e "$HOME/.ssh/.stignore" ]; then
+      echo "  📦 Backing up existing .stignore"
+      cp "$HOME/.ssh/.stignore" "$BACKUP_DIR/stignore-$(hostname -s)"
+    fi
+    echo "  ✨ Writing .stignore"
+    printf '#include ssh-ignores.txt\n// device-local additions below this line\n' > "$HOME/.ssh/.stignore"
+  fi
+fi
+
+# ============================================================================
 # Done!
 # ============================================================================
 echo ""

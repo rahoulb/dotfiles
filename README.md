@@ -27,10 +27,32 @@ dotfiles/
 ├── git/
 │   └── gitconfig
 ├── ghostty/                       # Ghostty terminal config
+├── syncthing/
+│   └── ssh-ignores.txt            # Shared Syncthing ignore list for ~/.ssh
 └── scripts/
     ├── install.sh                 # Automated installation
     └── backup-to-rsync.sh         # Daily backup script
 ```
+
+### Syncthing and `~/.ssh`
+
+`~/.ssh` is a Syncthing folder, shared device-to-device with no intermediate
+server so that keys never touch a third party. A few things in there are
+machine-local and must not sync — chiefly `agent.sock` and `ssh_auth_sock`,
+which are symlinks to socket paths unique to one machine *and* one login
+session.
+
+Syncthing never syncs `.stignore` itself, so the list can't just be shared.
+Instead each device gets a `.stignore` containing only `#include
+ssh-ignores.txt`, and the payload lives inside `~/.ssh` where Syncthing does
+distribute it. `install.sh` writes the `.stignore` and copies the payload.
+
+**Edit the list in `syncthing/ssh-ignores.txt`, not in `~/.ssh`** — otherwise
+your change is overwritten on the next `install.sh` run.
+
+**On a new machine, run `install.sh` before adding the device to the SSH
+folder.** A missing `#include` target is an error to Syncthing, and a device
+that joins with no ignore list will push its own sockets into the index.
 
 ## 🚀 Quick Start
 
