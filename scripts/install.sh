@@ -153,13 +153,23 @@ fi
 # script has to stay safe to run unattended. The keychain is per-machine and
 # does not sync, so every Mac needs it done separately.
 #
-# Advisory only — this cannot tell whether the entry is for the right key,
-# just that the machine has been seeded at all. A false pass beats blocking
-# an install; the real check is pushing after a reboot.
+# Query by service, NOT by creator code. ssh-add on macOS 14 stores the item
+# as svce="SSH", acct="<key path>" with no 'ssha' creator, so the obvious
+# `-C ssha` form returns 44 (errSecItemNotFound) even when the key IS seeded
+# — a false negative that reports every machine as unconfigured.
+#
+# Read attributes only. Never add -w here: fetching the secret triggers an
+# interactive keychain authorisation dialog and blocks indefinitely, which
+# would hang an unattended install. Without -w this is attribute-only and
+# returns in ~0.02s with no prompt.
+#
+# Advisory only — it cannot tell whether the entry still matches the key's
+# current passphrase, just that the machine has been seeded. A false pass
+# beats blocking an install; the real check is pushing after a reboot.
 if [ "$(uname)" = "Darwin" ]; then
   echo ""
   echo "🔑 Checking SSH key passphrase in login keychain..."
-  if security find-generic-password -C 'ssha' >/dev/null 2>&1; then
+  if security find-generic-password -s "SSH" >/dev/null 2>&1; then
     echo "  ✅ Keychain holds an SSH entry"
   else
     echo "  ⚠️  No SSH entry in the login keychain."
