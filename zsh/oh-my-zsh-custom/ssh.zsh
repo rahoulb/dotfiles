@@ -34,6 +34,12 @@ _ssh_agent_socket_live() {
 # Places a live agent might be found, best first.
 _ssh_agent_socket_candidates() {
   local kv
+  # The socket forwarded by the *current* ssh connection, recorded by ~/.ssh/rc at
+  # login. This is the only route to a freshly-forwarded agent: tmux only ever hands
+  # back the symlink, and the launchd path below exists solely on a GUI login, so on a
+  # headless ssh connection every other candidate comes up empty.
+  print -r -- "$HOME/.ssh/ssh_auth_sock"
+
   kv=$(tmux show-environment SSH_AUTH_SOCK 2>/dev/null)
   [[ "$kv" == SSH_AUTH_SOCK=* ]] && print -r -- "${kv#SSH_AUTH_SOCK=}"
 
@@ -54,8 +60,11 @@ _ssh_agent_socket_link() {
     ln -sfn "$SSH_AUTH_SOCK" "$link"
   fi
 
-  # Common path — link is healthy, so don't pay for probing on every shell.
-  if [[ -z "$force" && -S "$link" ]]; then
+  # Common path — link is healthy, so don't pay for a full hunt on every shell.
+  # This must probe, not just stat: a killed agent commonly leaves its socket file
+  # behind, and -S cannot tell that from a working one. Testing existence alone is
+  # what silently pinned every pane to a dead agent.
+  if [[ -z "$force" ]] && _ssh_agent_socket_live "$link"; then
     export SSH_AUTH_SOCK="$link"
     return 0
   fi
