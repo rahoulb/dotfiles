@@ -54,6 +54,25 @@ your change is overwritten on the next `install.sh` run.
 folder.** A missing `#include` target is an error to Syncthing, and a device
 that joins with no ignore list will push its own sockets into the index.
 
+### One-time per-Mac: seed the SSH passphrase into the keychain
+
+`ssh.zsh` runs `ssh-add --apple-use-keychain --apple-load-keychain` on every
+login shell, which reloads the key without a prompt and is what makes SSH work
+after a reboot. It can only reload a passphrase that was stored once:
+
+```bash
+ssh-add --apple-use-keychain ~/.ssh/rahoulb
+```
+
+Run it interactively and enter the passphrase. The keychain is **per-machine
+and does not sync**, so this is needed on every Mac — `install.sh` warns when
+it's missing but cannot do it for you.
+
+Without it, a launchd-spawned shell (cron jobs, background agents) finds an
+agent with no usable key and SSH operations fail *silently*, because that
+`ssh-add` discards stderr. There is no HTTPS fallback since the `insteadOf`
+rewrite was removed, so most repos here fail outright rather than rerouting.
+
 ## 🚀 Quick Start
 
 ### First Time Setup

@@ -140,6 +140,35 @@ else
 fi
 
 # ============================================================================
+# SSH key passphrase in the login keychain
+# ============================================================================
+# ssh.zsh already runs `ssh-add --apple-use-keychain --apple-load-keychain`
+# on every login shell. --apple-load-keychain reloads the key from the
+# keychain with no prompt, which is what survives a reboot — but it can only
+# reload what was seeded once, interactively. Until then a launchd-spawned
+# shell finds an agent with no usable key, and SSH pushes fail silently,
+# because that ssh-add discards stderr.
+#
+# We check rather than run: seeding needs a passphrase prompt, and this
+# script has to stay safe to run unattended. The keychain is per-machine and
+# does not sync, so every Mac needs it done separately.
+#
+# Advisory only — this cannot tell whether the entry is for the right key,
+# just that the machine has been seeded at all. A false pass beats blocking
+# an install; the real check is pushing after a reboot.
+if [ "$(uname)" = "Darwin" ]; then
+  echo ""
+  echo "🔑 Checking SSH key passphrase in login keychain..."
+  if security find-generic-password -C 'ssha' >/dev/null 2>&1; then
+    echo "  ✅ Keychain holds an SSH entry"
+  else
+    echo "  ⚠️  No SSH entry in the login keychain."
+    echo "     Run this once, interactively, and enter the passphrase:"
+    echo "       ssh-add --apple-use-keychain ~/.ssh/rahoulb"
+  fi
+fi
+
+# ============================================================================
 # Done!
 # ============================================================================
 echo ""
