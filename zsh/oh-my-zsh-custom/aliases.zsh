@@ -8,9 +8,6 @@ alias python=python3
 
 if [[ $(uname) == "Darwin" ]]; then
   alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
-  alias tmx="tmux -CC new -A -s rahoulb"
-else
-  alias tmx="tmux new -A -s rahoulb"
 fi
 
 # Git identity helpers
@@ -20,8 +17,8 @@ fi
 
 # Commit a single commit as yourself, without changing the repo's identity.
 # Everything else (including agent commits) stays as configured. Nothing to undo.
-#   gcme -m "my own change"
-alias gcme='git -c user.name="Rahoul Baruah" -c user.email="rahoulb@echodek.co" commit'
+#   gitcommitasme -m "my own change"
+alias gitcommitasme='git -c user.name="Rahoul Baruah" -c user.email="rahoulb@echodek.co" commit'
 
 # Show or switch the current repo's local commit identity for a whole session.
 # NOTE: while switched to "me", agent commits in this repo also become Rahoul -
@@ -29,6 +26,8 @@ alias gcme='git -c user.name="Rahoul Baruah" -c user.email="rahoulb@echodek.co" 
 #   gitwho          show the local + effective identity
 #   gitwho me       set this repo to Rahoul Baruah <rahoulb@echodek.co>
 #   gitwho tai      set this repo to Tai Frasier <tai@collabor8online.co.uk>
+#   gitwho cher     set this repo to Cher Horowitz <cher@echodek.co>
+#   gitwho dionne   set this repo to Dionne Davenport <dionne@collabor8online.co.uk>
 #   gitwho clear    remove the local override (fall back to the global identity)
 gitwho() {
   case "$1" in
@@ -41,6 +40,16 @@ gitwho() {
       git config user.name "Tai Frasier"
       git config user.email "tai@collabor8online.co.uk"
       echo "This repo now commits as Tai Frasier <tai@collabor8online.co.uk>"
+      ;;
+    cher)
+      git config user.name "Cher Horowitz"
+      git config user.email "cher@echodek.co"
+      echo "This repo now commits as Cher Horowitz <cher@echodek.co>"
+      ;;
+    dionne)
+      git config user.name "Dionne Davenport"
+      git config user.email "dionne@collabor8online.co.uk"
+      echo "This repo now commits as Dionne Davenport <dionne@collabor8online.co.uk>"
       ;;
     clear|unset)
       git config --unset user.name 2>/dev/null
@@ -63,3 +72,20 @@ gitwho() {
       ;;
   esac
 }
+
+# Start Claude Code as Tai Frasier 
+tai() {
+  gitwho tai && claude --add-dir ~/Obsidian/Agents/Tai --append-system-prompt-file ~/Obsidian/Agents/Tai/CLAUDE.md --remote-control Tai
+}
+
+# Start Claude Code as Cher Horowitz 
+cher() { 
+  gitwho cher && claude --add-dir ~/Obsidian/Agents/Cher --append-system-prompt-file ~/Obsidian/Agents/Cher/CLAUDE.md --remote-control Cher
+}
+
+# Start Claude Code as Dionne Davenport
+dionne() { 
+  gitwho dionne && claude --add-dir ~/Obsidian/Agents/Dionne --append-system-prompt-file ~/Obsidian/Agents/Dionne/CLAUDE.md --remote-control Dionne
+}
+
+
