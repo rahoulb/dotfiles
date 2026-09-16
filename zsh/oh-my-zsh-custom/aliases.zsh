@@ -31,15 +31,20 @@ alias gitcommitasme='git -c user.name="Rahoul Baruah" -c user.email="rahoulb@ech
 #   gitwho clear    remove the local override (fall back to the global identity)
 gitwho() {
   case "$1" in
-    me|rahoul)
+    me|echodek)
       git config user.name "Rahoul Baruah"
       git config user.email "rahoulb@echodek.co"
       echo "This repo now commits as Rahoul Baruah <rahoulb@echodek.co>"
       ;;
+    c8o)
+      git config user.name "Rahoul Baruah"
+      git config user.email "baz@collabor8online.co.uk"
+      echo "This repo now commits as Rahoul Baruah <baz@collabor8online.co.uk>"
+      ;;
     tai)
       git config user.name "Tai Frasier"
-      git config user.email "tai@collabor8online.co.uk"
-      echo "This repo now commits as Tai Frasier <tai@collabor8online.co.uk>"
+      git config user.email "tai@echodek.co"
+      echo "This repo now commits as Tai Frasier <tai@echodek.co>"
       ;;
     cher)
       git config user.name "Cher Horowitz"
@@ -48,8 +53,8 @@ gitwho() {
       ;;
     dionne)
       git config user.name "Dionne Davenport"
-      git config user.email "dionne@collabor8online.co.uk"
-      echo "This repo now commits as Dionne Davenport <dionne@collabor8online.co.uk>"
+      git config user.email "dionne@echodek.co"
+      echo "This repo now commits as Dionne Davenport <dionne@echodek.co>"
       ;;
     clear|unset)
       git config --unset user.name 2>/dev/null
@@ -73,19 +78,8 @@ gitwho() {
   esac
 }
 
-# Start Claude Code as Tai Frasier 
-tai() {
-  gitwho tai && claude --add-dir ~/Obsidian/Agents/Tai --append-system-prompt-file ~/Obsidian/Agents/Tai/CLAUDE.md --remote-control Tai
+# Start Claude Code for Collabor8Online work
+claude-c8o() {
+  gitwho c8o && claude --dangerously-skip-permissions --name C8O --remote-control C8O
 }
-
-# Start Claude Code as Cher Horowitz 
-cher() { 
-  gitwho cher && claude --add-dir ~/Obsidian/Agents/Cher --append-system-prompt-file ~/Obsidian/Agents/Cher/CLAUDE.md --remote-control Cher
-}
-
-# Start Claude Code as Dionne Davenport
-dionne() { 
-  gitwho dionne && claude --add-dir ~/Obsidian/Agents/Dionne --append-system-prompt-file ~/Obsidian/Agents/Dionne/CLAUDE.md --remote-control Dionne
-}
-
 

@@ -102,5 +102,4 @@ fi
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-# Attach to pismo-beach over SSH, opening Cher + Dionne tmux sessions in iTerm
-alias pismo="$HOME/Developer/dotfiles/scripts/attach-pismo.sh"
+
