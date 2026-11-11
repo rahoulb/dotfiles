@@ -56,15 +56,17 @@ safe_link "$DOTFILES_DIR/zsh/zshrc" "$HOME/.zshrc"
 safe_link "$DOTFILES_DIR/zsh/zshenv" "$HOME/.zshenv"
 
 # oh-my-zsh custom files
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
+if [ ! -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]; then
   echo "⚠️  oh-my-zsh not installed. Run:"
-  echo "  sh -c \"\$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\""
+  echo '  git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh'
 else
   echo "  Installing oh-my-zsh custom files..."
   for custom_file in "$DOTFILES_DIR/zsh/oh-my-zsh-custom"/*.zsh; do
     filename=$(basename "$custom_file")
     safe_link "$custom_file" "$HOME/.oh-my-zsh/custom/$filename"
   done
+  safe_link "$DOTFILES_DIR/zsh/oh-my-zsh-custom/themes/clueless.zsh-theme" \
+    "$HOME/.oh-my-zsh/custom/themes/clueless.zsh-theme"
 fi
 
 # ============================================================================
@@ -140,45 +142,6 @@ else
 fi
 
 # ============================================================================
-# SSH key passphrase in the login keychain
-# ============================================================================
-# ssh.zsh already runs `ssh-add --apple-use-keychain --apple-load-keychain`
-# on every login shell. --apple-load-keychain reloads the key from the
-# keychain with no prompt, which is what survives a reboot — but it can only
-# reload what was seeded once, interactively. Until then a launchd-spawned
-# shell finds an agent with no usable key, and SSH pushes fail silently,
-# because that ssh-add discards stderr.
-#
-# We check rather than run: seeding needs a passphrase prompt, and this
-# script has to stay safe to run unattended. The keychain is per-machine and
-# does not sync, so every Mac needs it done separately.
-#
-# Query by service, NOT by creator code. ssh-add on macOS 14 stores the item
-# as svce="SSH", acct="<key path>" with no 'ssha' creator, so the obvious
-# `-C ssha` form returns 44 (errSecItemNotFound) even when the key IS seeded
-# — a false negative that reports every machine as unconfigured.
-#
-# Read attributes only. Never add -w here: fetching the secret triggers an
-# interactive keychain authorisation dialog and blocks indefinitely, which
-# would hang an unattended install. Without -w this is attribute-only and
-# returns in ~0.02s with no prompt.
-#
-# Advisory only — it cannot tell whether the entry still matches the key's
-# current passphrase, just that the machine has been seeded. A false pass
-# beats blocking an install; the real check is pushing after a reboot.
-if [ "$(uname)" = "Darwin" ]; then
-  echo ""
-  echo "🔑 Checking SSH key passphrase in login keychain..."
-  if security find-generic-password -s "SSH" >/dev/null 2>&1; then
-    echo "  ✅ Keychain holds an SSH entry"
-  else
-    echo "  ⚠️  No SSH entry in the login keychain."
-    echo "     Run this once, interactively, and enter the passphrase:"
-    echo "       ssh-add --apple-use-keychain ~/.ssh/rahoulb"
-  fi
-fi
-
-# ============================================================================
 # Done!
 # ============================================================================
 echo ""
@@ -188,6 +151,6 @@ echo "Backup of old files: $BACKUP_DIR"
 echo ""
 echo "Next steps:"
 echo "  1. Set up private config: ~/Developer/private/"
-echo "  2. Restart your terminal or run: source ~/.zshrc"
+echo "  2. Start a Zsh session: zsh"
 echo "  3. Check everything works!"
 echo ""

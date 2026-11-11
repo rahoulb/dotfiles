@@ -54,25 +54,6 @@ your change is overwritten on the next `install.sh` run.
 folder.** A missing `#include` target is an error to Syncthing, and a device
 that joins with no ignore list will push its own sockets into the index.
 
-### One-time per-Mac: seed the SSH passphrase into the keychain
-
-`ssh.zsh` runs `ssh-add --apple-use-keychain --apple-load-keychain` on every
-login shell, which reloads the key without a prompt and is what makes SSH work
-after a reboot. It can only reload a passphrase that was stored once:
-
-```bash
-ssh-add --apple-use-keychain ~/.ssh/rahoulb
-```
-
-Run it interactively and enter the passphrase. The keychain is **per-machine
-and does not sync**, so this is needed on every Mac — `install.sh` warns when
-it's missing but cannot do it for you.
-
-Without it, a launchd-spawned shell (cron jobs, background agents) finds an
-agent with no usable key and SSH operations fail *silently*, because that
-`ssh-add` discards stderr. There is no HTTPS fallback since the `insteadOf`
-rewrite was removed, so most repos here fail outright rather than rerouting.
-
 ## 🚀 Quick Start
 
 ### First Time Setup
@@ -84,9 +65,9 @@ rewrite was removed, so most repos here fail outright rather than rerouting.
    cd dotfiles
    ```
 
-2. **Install oh-my-zsh** (if not already installed):
+2. **Install Zsh and Oh My Zsh** (if needed). On Ubuntu, use `sudo apt install zsh`.
    ```bash
-   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+   git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
    ```
 
 3. **Install modern dev tools:**
@@ -102,9 +83,9 @@ rewrite was removed, so most repos here fail outright rather than rerouting.
 
 5. **Set up private configuration** (see below)
 
-6. **Restart your terminal** or:
+6. **Start an interactive Zsh session:**
    ```bash
-   source ~/.zshrc
+   zsh
    ```
 
 ### Private Configuration Setup

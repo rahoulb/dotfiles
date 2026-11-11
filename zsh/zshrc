@@ -19,7 +19,6 @@ plugins=(
   docker
   git
   git-prompt
-  github
   rails
   rsync
   ruby

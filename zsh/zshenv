@@ -5,7 +5,4 @@ typeset -U path PATH
 
 export PATH=/usr/local/bin:/opt/homebrew/bin:$PATH
 
-# Hermes Agent — state home on the HD volume (added 2026-07-22)
-export HERMES_HOME="/Volumes/HD/Agents/hermes"
-# Hermes launcher lives here
 export PATH="$HOME/.local/bin:$PATH"
